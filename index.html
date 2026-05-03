@@ -3,86 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Event-Hive | Smart Event Coordination</title>
+    <title>EventHive | Professional Management Platform</title>
+    <meta name="description" content="The modern standard for event orchestration. Clean, flat, and powerful solutions for every stakeholder.">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .hero-section {
+            padding: 16px 0 8px 0;
+            text-align: center;
+        }
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 14px;
+            background: var(--primary-light);
+            color: var(--primary);
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+        .role-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 24px;
+        }
+        .role-card {
+            padding: 16px !important;
+        }
+        .hero-title {
+            font-size: 34px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            line-height: 1.1;
+            margin-bottom: 10px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- Splash Screen -->
-    <div id="splash-screen">
-        <i class="fa-solid fa-cube glossy-icon"></i>
-        <h1 class="splash-title">Event-Hive</h1>
-    </div>
-
-    <!-- Main Entry / Login Selection -->
-    <div class="login-wrapper">
-        <div class="login-header-main">
-            <h1>Welcome to Event-Hive</h1>
-            <p>Identify yourself to access the platform</p>
-        </div>
-
-        <div class="role-grid-enhanced">
-            <!-- Admin Portal -->
-            <div class="role-card-enhanced" onclick="window.location.href='auth.html?role=admin'">
-                <i class="fa-solid fa-shield-halved role-icon-large"></i>
-                <div class="role-title-large">Admin</div>
-                <div class="role-desc-large">System configuration</div>
+    <header class="topbar" style="border:none; background:transparent">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-size: 20px; font-weight: 700; display: flex; align-items: center; color: var(--text-primary)">
+                <i class="fa-solid fa-hive" style="margin-right: 10px; color: var(--primary)"></i> EventHive
             </div>
-
-            <!-- Organizer Portal -->
-            <div class="role-card-enhanced" onclick="window.location.href='auth.html?role=organizer'">
-                <i class="fa-solid fa-user-tie role-icon-large"></i>
-                <div class="role-title-large">Organizer</div>
-                <div class="role-desc-large">Plan & manage events</div>
-            </div>
-
-            <!-- Vendor Portal -->
-            <div class="role-card-enhanced" onclick="window.location.href='auth.html?role=vendor'">
-                <i class="fa-solid fa-store role-icon-large"></i>
-                <div class="role-title-large">Vendor</div>
-                <div class="role-desc-large">Manage services</div>
-            </div>
-
-            <!-- Team Member/Staff Portal -->
-            <div class="role-card-enhanced" onclick="window.location.href='auth.html?role=staff'">
-                <i class="fa-solid fa-users-gear role-icon-large"></i>
-                <div class="role-title-large">Staff & Team</div>
-                <div class="role-desc-large">On-site operations (Waiters, Cooks)</div>
-            </div>
-
-            <!-- Sponsor Portal -->
-            <div class="role-card-enhanced" onclick="window.location.href='auth.html?role=sponsor'">
-                <i class="fa-solid fa-handshake role-icon-large"></i>
-                <div class="role-title-large">Sponsor</div>
-                <div class="role-desc-large">Funding & Branding</div>
-            </div>
-
-            <!-- Attendee Portal -->
-            <div class="role-card-enhanced" onclick="window.location.href='auth.html?role=attendee'">
-                <i class="fa-solid fa-ticket role-icon-large"></i>
-                <div class="role-title-large">Attendee</div>
-                <div class="role-desc-large">Tickets & schedules</div>
+            <div>
+                <!-- Buttons removed per user request -->
             </div>
         </div>
-    </div>
+    </header>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const splash = document.getElementById('splash-screen');
-            const loginWrapper = document.querySelector('.login-wrapper');
+    <main class="container">
+        <section class="hero-section">
+            <div class="hero-badge">Next Gen Orchestration</div>
+            <h1 class="hero-title">Plan. Source. Execute.<br><span style="color:var(--primary)">Seamlessly.</span></h1>
+            <p class="text-secondary" style="font-size: 14px; max-width: 640px; margin: 0 auto; line-height: 1.4;">
+                The central nervous system for your events. Trusted by planners, vendors, and sponsors worldwide to deliver world-class experiences.
+            </p>
 
-            // Wait for 2.5 seconds to show off the glossy logo animation
-            setTimeout(() => {
-                splash.classList.add('hidden');
-                
-                // After fade out transition (0.8s), remove it from flow and show login
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    loginWrapper.classList.add('visible');
-                }, 800);
-            }, 2500);
-        });
-    </script>
+            <div class="role-grid">
+                <!-- Organizer -->
+                <a href="auth.html?role=organizer" class="role-card">
+                    <div style="width:36px; height:36px; background:var(--primary-light); border-radius:10px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;">
+                        <i class="fa-solid fa-user-tie" style="font-size:16px; color:var(--primary)"></i>
+                    </div>
+                    <h3 style="margin-bottom:4px; font-size:15px">Organizers</h3>
+                    <p style="font-size:11px" class="text-tertiary">End-to-end lifecycle management, from budget to breakdown.</p>
+                </a>
+
+                <!-- Vendor -->
+                <a href="auth.html?role=store" class="role-card">
+                    <div style="width:36px; height:36px; background:var(--success-fill); border-radius:10px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;">
+                        <i class="fa-solid fa-store" style="font-size:16px; color:var(--success-text)"></i>
+                    </div>
+                    <h3 style="margin-bottom:4px; font-size:15px">Vendors</h3>
+                    <p style="font-size:11px" class="text-tertiary">Showcase services, secure bookings, and scale your operations.</p>
+                </a>
+
+                <!-- Admin -->
+                <a href="auth.html?role=admin" class="role-card">
+                    <div style="width:36px; height:36px; background:var(--info-fill); border-radius:10px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;">
+                        <i class="fa-solid fa-shield-halved" style="font-size:16px; color:var(--info-text)"></i>
+                    </div>
+                    <h3 style="margin-bottom:4px; font-size:15px">Administrators</h3>
+                    <p style="font-size:11px" class="text-tertiary">Total platform oversight, user management, and health metrics.</p>
+                </a>
+
+                <!-- Sponsor -->
+                <a href="auth.html?role=sponsor" class="role-card">
+                    <div style="width:36px; height:36px; background:var(--warning-fill); border-radius:10px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;">
+                        <i class="fa-solid fa-handshake" style="font-size:16px; color:var(--warning-text)"></i>
+                    </div>
+                    <h3 style="margin-bottom:4px; font-size:15px">Sponsors</h3>
+                    <p style="font-size:11px" class="text-tertiary">Maximize brand exposure and manage sponsorship portfolios.</p>
+                </a>
+
+                <!-- Employee -->
+                <a href="auth.html?role=employee" class="role-card">
+                    <div style="width:36px; height:36px; background:var(--bg-tertiary); border-radius:10px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;">
+                        <i class="fa-solid fa-users-gear" style="font-size:16px; color:var(--text-primary)"></i>
+                    </div>
+                    <h3 style="margin-bottom:4px; font-size:15px">Team Members</h3>
+                    <p style="font-size:11px" class="text-tertiary">On-site execution, task tracking, and real-time coordination.</p>
+                </a>
+
+                <!-- Attendee -->
+                <a href="join.html" class="role-card">
+                    <div style="width:36px; height:36px; background:var(--primary-light); border-radius:10px; display:flex; align-items:center; justify-content:center; margin:0 auto 8px auto;">
+                        <i class="fa-solid fa-ticket" style="font-size:16px; color:var(--primary)"></i>
+                    </div>
+                    <h3 style="margin-bottom:4px; font-size:15px">Attendees</h3>
+                    <p style="font-size:11px" class="text-tertiary">Quick access to your event via an invite code. No registration required.</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer style="margin-top: 16px; padding: 12px 0; border-top: 0.5px solid var(--border-default); text-align: center;">
+        <p class="text-tertiary" style="font-size: 11px;">&copy; 2026 EventHive. All rights reserved. Built for professional orchestration.</p>
+    </footer>
+
 </body>
 </html>

@@ -3,219 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketplace | Event-Hive</title>
+    <title>Global Marketplace | EventHive</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .filter-bar {
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-light);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-        }
-        .venue-card {
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-        }
-        .venue-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 1rem;
-            margin-bottom: 1rem;
-            position: relative;
-            overflow: hidden;
-        }
-        .venue-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(10px);
-            padding: 0.5rem 1rem;
-            border-radius: 99px;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-        .price-tag {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--success);
-        }
-        .availability-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--success);
-            display: inline-block;
-            margin-right: 0.5rem;
-        }
+        .market-header { border-bottom: 0.5px solid var(--border-default); padding: 48px 0; margin-bottom: 32px; }
+        .search-container { position: relative; max-width: 480px; margin-top: 24px; }
+        .search-container i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); font-size: 14px; }
+        .search-input { width: 100%; padding: 12px 14px 12px 40px; border: 0.5px solid var(--border-default); border-radius: 8px; font-size: 14px; transition: border-color 0.2s; outline: none; }
+        .search-input:focus { border-color: var(--primary); }
+        
+        .filter-row { display: flex; gap: 10px; overflow-x: auto; padding: 16px 0; margin-bottom: 32px; border-bottom: 0.5px solid var(--border-default); scrollbar-width: none; }
+        .filter-chip { padding: 8px 18px; border-radius: 100px; border: 0.5px solid var(--border-default); font-size: 13px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+        .filter-chip.active { background: var(--primary); color: white; border-color: var(--primary); }
+        
+        .venue-card { border: 0.5px solid var(--border-default); border-radius: 12px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; background: white; }
+        .venue-card:hover { transform: translateY(-6px); border-color: var(--primary); }
+        .card-img { height: 200px; background: var(--bg-secondary); overflow: hidden; position: relative; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .venue-card:hover .card-img img { transform: scale(1.05); }
+        .price-badge { position: absolute; bottom: 12px; right: 12px; background: white; padding: 5px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; border: 0.5px solid var(--border-default); }
+        
+        /* Modal for Detail View */
+        .detail-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+        .detail-box { background: white; width: 800px; border-radius: 20px; overflow: hidden; display: flex; max-height: 90vh; }
+        .detail-img { width: 45%; background: var(--bg-secondary); }
+        .detail-img img { width: 100%; height: 100%; object-fit: cover; }
+        .detail-content { flex: 1; padding: 40px; overflow-y: auto; }
     </style>
 </head>
-<body>
+<body class="app-wrapper">
 
-    <!-- Header -->
-    <header id="header" class="scrolled">
-        <div class="container flex justify-between items-center">
-            <div class="logo">
-                <span class="text-gradient"><i class="fa-solid fa-cube"></i> Event-Hive</span>
-            </div>
-            <nav class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="marketplace.html" style="color: var(--primary);">Marketplace</a>
-                <a href="dashboard.html">My Events</a>
-                <a href="vendor-dashboard.html">Vendor Portal</a>
-            </nav>
+    <aside class="sidebar">
+        <div class="sidebar-logo" onclick="location.href='index.html'" style="cursor:pointer">
+            <i class="fa-solid fa-hive" style="font-size: 24px; margin-right: 12px; color: var(--primary)"></i>
+            <span style="font-size: 20px; font-weight: 700; letter-spacing: -0.5px;">EventHive</span>
         </div>
-    </header>
-
-    <div style="padding-top: 6rem; min-height: 100vh;">
-        <div class="container">
-            
-            <!-- Page Header -->
-            <div style="margin-bottom: 3rem;">
-                <h1 style="font-size: 2.5rem; margin-bottom: 0.5rem;">Discover <span class="text-gradient">Perfect Venues</span></h1>
-                <p style="color: var(--text-muted); font-size: 1.1rem;">Browse community centers, resorts, and event spaces with real-time availability</p>
+        <div class="sidebar-role">Marketplace</div>
+        <nav class="nav-group">
+            <a href="dashboard.html" class="nav-item">
+                <i class="fa-solid fa-gauge-high"></i><span>Management Panel</span>
+            </a>
+            <div class="nav-item active">
+                <i class="fa-solid fa-store"></i><span>Marketplace</span>
             </div>
-
-            <!-- Filter Bar -->
-            <div class="filter-bar">
-                <div class="grid grid-cols-3 gap-4">
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Event Type</label>
-                        <select style="width: 100%; padding: 0.75rem; background: var(--bg-darker); border: 1px solid var(--border-light); border-radius: 0.5rem; color: white;">
-                            <option>All Events</option>
-                            <option>Wedding</option>
-                            <option>Corporate</option>
-                            <option>Birthday Party</option>
-                            <option>Conference</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Budget Range</label>
-                        <select style="width: 100%; padding: 0.75rem; background: var(--bg-darker); border: 1px solid var(--border-light); border-radius: 0.5rem; color: white;">
-                            <option>Any Budget</option>
-                            <option>Under $5,000</option>
-                            <option>$5,000 - $10,000</option>
-                            <option>$10,000 - $25,000</option>
-                            <option>$25,000+</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Date</label>
-                        <input type="date" style="width: 100%; padding: 0.75rem; background: var(--bg-darker); border: 1px solid var(--border-light); border-radius: 0.5rem; color: white;">
-                    </div>
-                </div>
-                <div style="margin-top: 1rem; display: flex; gap: 1rem;">
-                    <button class="btn btn-primary">Search Venues</button>
-                    <button class="btn btn-glass">Reset Filters</button>
-                </div>
+            <div class="nav-item">
+                <i class="fa-solid fa-heart"></i><span>Saved Assets</span>
             </div>
-
-            <!-- Venue Categories -->
-            <div style="margin-bottom: 2rem;">
-                <div class="flex gap-2">
-                    <button class="btn btn-primary" style="border-radius: 0.75rem;">All Venues</button>
-                    <button class="btn btn-glass" style="border-radius: 0.75rem;"><i class="fa-solid fa-building"></i> Community Centers</button>
-                    <button class="btn btn-glass" style="border-radius: 0.75rem;"><i class="fa-solid fa-hotel"></i> Resorts</button>
-                    <button class="btn btn-glass" style="border-radius: 0.75rem;"><i class="fa-solid fa-utensils"></i> Catering</button>
-                    <button class="btn btn-glass" style="border-radius: 0.75rem;"><i class="fa-solid fa-camera"></i> Photography</button>
-                </div>
+        </nav>
+        <div style="margin-top: auto; padding: 20px;">
+            <div class="card" style="padding: 16px; background: var(--bg-secondary); border: none;">
+                <p style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px;">Support</p>
+                <p style="font-size: 12px; line-height: 1.5;">Need help sourcing for a large event?</p>
+                <button class="btn btn-ghost" style="padding: 0; font-size: 12px; font-weight: 600; color: var(--primary); margin-top: 8px;">Contact Agent</button>
             </div>
+        </div>
+    </aside>
 
-            <!-- Venue Grid -->
-            <div class="grid grid-cols-3 gap-4">
+    <main class="main-content">
+        <header class="topbar">
+            <div style="font-weight: 600; font-size: 15px;">Discover Assets</div>
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <button class="btn btn-primary" onclick="switchView('bookings')">Request Status</button>
+                <div id="user-circle" style="width:32px; height:32px; background:var(--primary); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600">UO</div>
+            </div>
+        </header>
+
+        <div style="padding: 0 48px;">
+            <div class="market-header">
+                <h1 style="font-size: 36px; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 12px;">Sourcing & Marketplace</h1>
+                <p class="text-secondary" style="font-size: 16px;">Secure the best venues and services for your next production.</p>
                 
-                <!-- Venue Card 1 - Community Center -->
-                <div class="glass-card venue-card">
-                    <div class="venue-image">
-                        <div class="venue-badge"><i class="fa-solid fa-building"></i> Community Center</div>
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                            <span style="font-size: 0.9rem;"><i class="fa-solid fa-users"></i> Capacity: 500</span>
-                        </div>
-                    </div>
-                    <h3 style="margin-bottom: 0.5rem;">Grand Community Hall</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;"><i class="fa-solid fa-location-dot"></i> Downtown, New York</p>
-                    
-                    <div style="margin-bottom: 1rem;">
-                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Included Services:</div>
-                        <div class="flex gap-1" style="flex-wrap: wrap;">
-                            <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">Catering</span>
-                            <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">Decoration</span>
-                            <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">AV Setup</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center" style="margin-bottom: 1rem;">
-                        <div class="price-tag">$3,500<span style="font-size: 0.8rem; color: var(--text-muted);">/day</span></div>
-                        <div style="font-size: 0.85rem;"><span class="availability-dot"></span>Available</div>
-                    </div>
-
-                    <button class="btn btn-primary" style="width: 100%;" onclick="alert('Service Request Sent to Vendor! (FR010)')">View Details & Book</button>
+                <div class="search-container">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="search-input" id="search-bar" placeholder="Search by name, category or region..." onkeyup="handleFilter()">
                 </div>
-
-                <!-- Venue Card 2 - Resort -->
-                <div class="glass-card venue-card">
-                    <div class="venue-image" style="background: linear-gradient(135deg, #10b981, #059669);">
-                        <div class="venue-badge"><i class="fa-solid fa-hotel"></i> Resort</div>
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                            <span style="font-size: 0.9rem;"><i class="fa-solid fa-users"></i> Capacity: 300</span>
-                        </div>
-                    </div>
-                    <h3 style="margin-bottom: 0.5rem;">Lakeside Paradise Resort</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;"><i class="fa-solid fa-location-dot"></i> Lake District, CA</p>
-                    
-                    <div style="margin-bottom: 1rem;">
-                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Bring Your Own:</div>
-                        <div class="flex gap-1" style="flex-wrap: wrap;">
-                            <span style="background: rgba(236, 72, 153, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">Catering</span>
-                            <span style="background: rgba(236, 72, 153, 0.1); color: var(--accent); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">Decoration</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center" style="margin-bottom: 1rem;">
-                        <div class="price-tag">$8,000<span style="font-size: 0.8rem; color: var(--text-muted);">/day</span></div>
-                        <div style="font-size: 0.85rem;"><span class="availability-dot"></span>Available</div>
-                    </div>
-
-                    <button class="btn btn-primary" style="width: 100%;" onclick="alert('Service Request Sent to Vendor! (FR010)')">View Details & Book</button>
-                </div>
-
-                <!-- Venue Card 3 - Community Center -->
-                <div class="glass-card venue-card">
-                    <div class="venue-image" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
-                        <div class="venue-badge"><i class="fa-solid fa-building"></i> Community Center</div>
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 1rem; background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);">
-                            <span style="font-size: 0.9rem;"><i class="fa-solid fa-users"></i> Capacity: 200</span>
-                        </div>
-                    </div>
-                    <h3 style="margin-bottom: 0.5rem;">Riverside Event Center</h3>
-                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1rem;"><i class="fa-solid fa-location-dot"></i> Brooklyn, NY</p>
-                    
-                    <div style="margin-bottom: 1rem;">
-                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">Included Services:</div>
-                        <div class="flex gap-1" style="flex-wrap: wrap;">
-                            <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">Full Package</span>
-                            <span style="background: rgba(99, 102, 241, 0.1); color: var(--primary); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem;">Parking</span>
-                        </div>
-                    </div>
-
-                    <div class="flex justify-between items-center" style="margin-bottom: 1rem;">
-                        <div class="price-tag">$2,200<span style="font-size: 0.8rem; color: var(--text-muted);">/day</span></div>
-                        <div style="font-size: 0.85rem;"><span class="availability-dot" style="background: var(--warning);"></span>Limited</div>
-                    </div>
-
-                    <button class="btn btn-primary" style="width: 100%;" onclick="alert('Service Request Sent to Vendor! (FR010)')">View Details & Book</button>
-                </div>
-
             </div>
 
+            <div class="filter-row" id="category-filters">
+                <div class="filter-chip active" onclick="filterCategory('All', this)">All Categories</div>
+                <div class="filter-chip" onclick="filterCategory('Venue', this)">Venues</div>
+                <div class="filter-chip" onclick="filterCategory('Catering', this)">Catering</div>
+                <div class="filter-chip" onclick="filterCategory('AV & Tech', this)">AV & Tech</div>
+                <div class="filter-chip" onclick="filterCategory('Staffing', this)">Staffing Services</div>
+            </div>
+
+            <div class="grid grid-3" id="service-grid" style="padding-bottom: 80px;">
+                <!-- Content injected via JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Detail Modal -->
+    <div id="service-modal" class="detail-modal" onclick="if(event.target === this) closeDetail()">
+        <div class="detail-box">
+            <div class="detail-img" id="detail-img-box">
+                <img src="" id="modal-img">
+            </div>
+            <div class="detail-content">
+                <div class="badge badge-info" id="modal-tag" style="margin-bottom: 16px;">Category</div>
+                <h2 id="modal-title" style="font-size: 32px; font-weight: 700; margin-bottom: 8px;">Service Name</h2>
+                <p class="text-secondary" id="modal-loc" style="margin-bottom: 24px;"><i class="fa-solid fa-location-dot"></i> Location</p>
+                
+                <h4 style="margin-bottom: 12px; font-size: 14px;">Service Information</h4>
+                <p class="text-secondary" style="font-size: 14px; line-height: 1.8; margin-bottom: 32px;">
+                    This provider is verified by EventHive and maintaining a 98% satisfaction rate. Bookings through the platform are covered by our Service Protection policy.
+                </p>
+
+                <div style="background: var(--bg-secondary); padding: 24px; border-radius: 12px; margin-bottom: 32px;">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                        <div>
+                            <p style="font-size: 11px; font-weight: 600; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 4px;">Investment</p>
+                            <span style="font-size: 24px; font-weight: 700;" id="modal-price">$0</span>
+                        </div>
+                        <button class="btn btn-primary" style="padding: 12px 32px;" onclick="handleBookingAction()">Request Booking</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="store.js"></script>
+    <script src="common.js"></script>
+    <script>
+        const services = [
+            { id: 1, name: 'Grand Community Hall', cat: 'Venue', loc: 'Manhattan, NY', p: '$3,500/day', img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=600&q=80' },
+            { id: 2, name: 'Lakeside Paradise', cat: 'Venue', loc: 'Upstate, NY', p: '$8,200/day', img: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=600&q=80' },
+            { id: 3, name: 'Elite Culinary Group', cat: 'Catering', loc: 'Global Service', p: '$45/guest', img: 'https://images.unsplash.com/photo-1560523160-754a9e25c68f?auto=format&fit=crop&w=600&q=80' },
+            { id: 4, name: 'Vantage Point Studios', cat: 'AV & Tech', loc: 'Brooklyn, NY', p: '$1,200/day', img: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=600&q=80' },
+            { id: 5, name: 'ProStaff Coordinators', cat: 'Staffing', loc: 'On-site', p: '$150/hr', img: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&w=600&q=80' },
+            { id: 6, name: 'Crystal Plaza', cat: 'Venue', loc: 'New Jersey, NJ', p: '$5,000/day', img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=600&q=80' }
+        ];
+
+        let activeCat = 'All';
+        let currentSvc = null;
+
+        function renderGrid() {
+            const container = document.getElementById('service-grid');
+            const search = document.getElementById('search-bar').value.toLowerCase();
+            
+            const filtered = services.filter(s => {
+                const matchCat = activeCat === 'All' || s.cat === activeCat;
+                const matchSearch = s.name.toLowerCase().includes(search) || s.cat.toLowerCase().includes(search);
+                return matchCat && matchSearch;
+            });
+
+            container.innerHTML = filtered.map(s => `
+                <div class="venue-card" onclick="openDetail(${s.id})">
+                    <div class="card-img">
+                        <img src="${s.img}">
+                        <div class="price-badge">${s.p}</div>
+                    </div>
+                    <div style="padding: 20px;">
+                        <div class="venue-tag" style="margin-bottom:6px">${s.cat}</div>
+                        <h3 class="venue-title" style="font-size:16px; margin-bottom:4px">${s.name}</h3>
+                        <p class="venue-location"><i class="fa-solid fa-location-dot"></i> ${s.loc}</p>
+                        <button class="btn btn-secondary" style="width:100%; margin-top:16px; font-weight:600">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function filterCategory(cat, el) {
+            activeCat = cat;
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            el.classList.add('active');
+            renderGrid();
+        }
+
+        function handleFilter() { renderGrid(); }
+
+        function openDetail(id) {
+            currentSvc = services.find(s => s.id === id);
+            document.getElementById('modal-img').src = currentSvc.img;
+            document.getElementById('modal-title').innerText = currentSvc.name;
+            document.getElementById('modal-tag').innerText = currentSvc.cat;
+            document.getElementById('modal-loc').innerHTML = `<i class="fa-solid fa-location-dot"></i> ${currentSvc.loc}`;
+            document.getElementById('modal-price').innerText = currentSvc.p;
+            document.getElementById('service-modal').style.display = 'flex';
+        }
+
+        function closeDetail() { document.getElementById('service-modal').style.display = 'none'; }
+
+        function handleBookingAction() {
+            DataStore.addBooking({
+                eventName: `Product Sourcing (Requested)`,
+                client: 'Internal Planner',
+                date: '2026-07-15',
+                amount: currentSvc.p.split('/')[0],
+                status: 'Requested'
+            });
+            showNotification(`Success! Sourcing request for ${currentSvc.name} sent.`, 'success');
+            closeDetail();
+        }
+
+        renderGrid();
+    </script>
 </body>
 </html>

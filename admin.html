@@ -324,47 +324,117 @@
 
     </main>
 
+    <!-- Core Scripts -->
+    <script src="store.js"></script>
+    <script src="common.js"></script>
+    <script src="auth.js"></script>
+    
     <script>
-        // Simple client-side routing for the admin panel
+        // Check Auth
+        if (requireAuth(['admin'])) {
+            const session = SessionManager.getSession();
+            // Update UI with Session Data
+            document.querySelector('.avatar').innerText = 'AD';
+            document.querySelector('.sidebar .glass-card div div:first-child').innerText = session.name;
+            
+            // Initial Data Load
+            loadStats();
+        }
+
+        function loadStats() {
+            const users = DataStore.getUsers();
+            const vendors = users.filter(u => u.role === 'vendor');
+            const pendingVendors = vendors.filter(v => v.status === 'pending_approval');
+            
+            document.querySelector('.metric-value').innerText = users.length.toLocaleString();
+            document.querySelectorAll('.stat-card .metric-value')[1].innerText = pendingVendors.length;
+        }
+
+        function renderUsers() {
+            const users = DataStore.getUsers();
+            const tbody = document.querySelector('#users-section tbody');
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>#${user.id.slice(-6)}</td>
+                    <td>${user.name}</td>
+                    <td>${user.role.charAt(0).toUpperCase() + user.role.slice(1)}</td>
+                    <td><span class="status-badge ${user.status === 'active' ? 'status-active' : 'status-blocked'}">${user.status || 'Active'}</span></td>
+                    <td>
+                        <button class="btn-glass btn-sm" onclick="alert('User details: ${user.email}')"><i class="fa-solid fa-info-circle"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderVendors() {
+            const users = DataStore.getUsers();
+            const pendingVendors = users.filter(u => u.role === 'vendor' && u.status === 'pending_approval');
+            const tbody = document.querySelector('#vendors-section tbody');
+            
+            tbody.innerHTML = pendingVendors.length ? pendingVendors.map(vendor => `
+                <tr>
+                    <td><strong>${vendor.business_name || vendor.name}</strong></td>
+                    <td>${vendor.type || 'Service'}</td>
+                    <td>${new Date(vendor.createdAt || Date.now()).toLocaleDateString()}</td>
+                    <td><span class="status-badge" style="background: rgba(245, 158, 11, 0.2); color: var(--warning);">Pending</span></td>
+                    <td>
+                        <button class="btn btn-sm" style="background: var(--success); color: var(--bg-dark); border:none; margin-right: 0.5rem;" onclick="updateVendorStatus('${vendor.email}', 'active')">Approve</button>
+                        <button class="btn btn-sm" style="background: transparent; border: 1px solid #ef4444; color: #ef4444;" onclick="updateVendorStatus('${vendor.email}', 'rejected')">Reject</button>
+                    </td>
+                </tr>
+            `).join('') : '<tr><td colspan="5" style="text-align:center; padding: 2rem; color: var(--text-muted);">No pending approvals</td></tr>';
+        }
+
+        function updateVendorStatus(email, status) {
+            const user = DataStore.getUserByEmail(email);
+            if (user) {
+                user.status = status;
+                DataStore.saveUser(user);
+                showNotification(`Vendor ${status === 'active' ? 'approved' : 'rejected'} successfully`, 'success');
+                renderVendors();
+                loadStats();
+            }
+        }
+
         function showSection(sectionId) {
-            // Hide all sections
             document.getElementById('overview-section').style.display = 'none';
             document.getElementById('users-section').style.display = 'none';
             document.getElementById('reports-section').style.display = 'none';
             document.getElementById('vendors-section').style.display = 'none';
 
-            // Show selected
-            if (sectionId === 'overview') document.getElementById('overview-section').style.display = 'block';
-            if (sectionId === 'users') document.getElementById('users-section').style.display = 'block';
+            if (sectionId === 'overview') {
+                document.getElementById('overview-section').style.display = 'block';
+                loadStats();
+            }
+            if (sectionId === 'users') {
+                document.getElementById('users-section').style.display = 'block';
+                renderUsers();
+            }
             if (sectionId === 'reports') document.getElementById('reports-section').style.display = 'block';
-            if (sectionId === 'vendors') document.getElementById('vendors-section').style.display = 'block';
-            if (sectionId === 'settings') alert('Settings Page Placeholder');
+            if (sectionId === 'vendors') {
+                document.getElementById('vendors-section').style.display = 'block';
+                renderVendors();
+            }
             
-            // Update Title
             const titles = {
                 'overview': 'Admin Dashboard',
                 'users': 'User Management',
                 'reports': 'System Reports',
-                'vendors': 'Vendor Approvals',
-                'settings': 'Settings'
+                'vendors': 'Vendor Approvals'
             };
             document.getElementById('page-title').innerText = titles[sectionId] || 'Dashboard';
             
-            // Update Sidebar Active State
             document.querySelectorAll('.sidebar-link').forEach(link => link.classList.remove('active'));
-            event.currentTarget.classList.add('active');
+            if (event) event.currentTarget.classList.add('active');
         }
 
         function generateReport() {
-            // UC-18 Simulation
             const btn = document.querySelector('#reports-section .btn-primary');
-            const originalText = btn.innerText;
             btn.innerText = "Generating...";
             btn.disabled = true;
-
             setTimeout(() => {
-                alert("Report Generated Successfully! (Simulated Download of report.pdf)");
-                btn.innerText = originalText;
+                showNotification("Report Generated Successfully!", "success");
+                btn.innerText = "Download PDF Report";
                 btn.disabled = false;
             }, 1500);
         }

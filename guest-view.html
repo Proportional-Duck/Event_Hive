@@ -3,273 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guest View | Event-Hive</title>
+    <title>Event Details | EventHive</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .event-header {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            padding: 4rem 2rem;
-            border-radius: 1.5rem;
-            margin-bottom: 2rem;
-            position: relative;
-            overflow: hidden;
+        .guest-hero {
+            padding: 64px 0;
+            border-bottom: 0.5px solid var(--border-default);
+            margin-bottom: 48px;
         }
-        .event-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        .guest-hero h1 {
+            font-size: 32px;
+            margin-bottom: 12px;
         }
-        .info-section {
-            margin-bottom: 2rem;
-        }
-        .menu-item {
+        .event-meta {
             display: flex;
-            justify-content: space-between;
-            padding: 1rem;
-            background: var(--bg-darker);
-            border-radius: 0.75rem;
-            margin-bottom: 0.75rem;
-            transition: var(--transition);
+            gap: 24px;
+            color: var(--text-secondary);
+            font-size: 14px;
         }
-        .menu-item:hover {
-            background: var(--bg-card);
-            transform: translateX(5px);
+        .event-meta i {
+            margin-right: 8px;
+            color: var(--primary);
         }
         .timeline-item {
             position: relative;
-            padding-left: 2rem;
-            padding-bottom: 2rem;
-            border-left: 2px solid var(--border-light);
+            padding-left: 24px;
+            padding-bottom: 24px;
+            border-left: 0.5px solid var(--border-default);
         }
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -6px;
+            left: -4px;
             top: 0;
-            width: 10px;
-            height: 10px;
+            width: 8px;
+            height: 8px;
             background: var(--primary);
             border-radius: 50%;
         }
         .timeline-item:last-child {
             border-left-color: transparent;
         }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+        .menu-item {
+            padding: 16px;
+            border: 0.5px solid var(--border-default);
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 
-    <!-- Simple Header for Guests -->
-    <header id="header" class="scrolled">
-        <div class="container flex justify-between items-center">
-            <div class="logo">
-                <span class="text-gradient"><i class="fa-solid fa-cube"></i> Event-Hive</span>
-            </div>
-            <div style="color: var(--text-muted); font-size: 0.9rem;">
-                <i class="fa-solid fa-user"></i> Guest View
-            </div>
+    <header class="topbar">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary);">EventHive</div>
+            <div style="font-size: 12px; color: var(--text-tertiary);"><i class="fa-solid fa-user"></i> Guest View</div>
         </div>
     </header>
 
-    <div style="padding-top: 6rem; min-height: 100vh;">
-        <div class="container" style="max-width: 900px;">
-            
-            <!-- Event Header -->
-            <div class="event-header">
-                <div style="position: relative; z-index: 1;">
-                    <h1 style="font-size: 2.5rem; margin-bottom: 1rem;">Sarah & Michael's Wedding</h1>
-                    <div class="flex gap-4" style="font-size: 1.1rem; opacity: 0.9;">
-                        <div><i class="fa-regular fa-calendar"></i> February 14, 2026</div>
-                        <div><i class="fa-regular fa-clock"></i> 5:00 PM - 11:00 PM</div>
-                        <div><i class="fa-solid fa-location-dot"></i> Grand Community Hall, NY</div>
-                    </div>
+    <main class="container" style="max-width: 800px;">
+        <section class="guest-hero">
+            <h1>Sarah & Michael's Wedding</h1>
+            <div class="event-meta">
+                <span><i class="fa-regular fa-calendar"></i> February 14, 2026</span>
+                <span><i class="fa-regular fa-clock"></i> 5:00 PM - 11:00 PM</span>
+                <span><i class="fa-solid fa-location-dot"></i> Grand Community Hall, NY</span>
+            </div>
+        </section>
+
+        <section style="margin-bottom: 48px;">
+            <p class="text-secondary" style="font-size: 15px; line-height: 1.8;">
+                Dear Friends and Family,<br><br>
+                We are thrilled to have you join us on our special day! This page contains all the information you need about our wedding celebration. Please review the schedule, menu options, and dress code below.
+            </p>
+        </section>
+
+        <div class="grid grid-2" style="margin-bottom: 48px; gap: 24px;">
+            <div class="card">
+                <h4 style="font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-palette" style="margin-right: 8px;"></i> Theme & Style</h4>
+                <div style="font-size: 13px; color: var(--text-secondary);">
+                    <p><strong>Theme:</strong> Romantic Garden</p>
+                    <p style="margin-top: 8px;"><strong>Dress Code:</strong> Formal / Black Tie Optional</p>
+                    <p style="margin-top: 8px;"><strong>Color Palette:</strong> Blush Pink, Gold, Ivory</p>
                 </div>
             </div>
-
-            <!-- Welcome Message -->
-            <div class="glass-card" style="margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-heart" style="color: var(--accent);"></i> Welcome Message</h3>
-                <p style="color: var(--text-muted); line-height: 1.8;">
-                    Dear Friends and Family,<br><br>
-                    We are thrilled to have you join us on our special day! This page contains all the information you need about our wedding celebration. 
-                    Please review the schedule, menu options, and dress code. We can't wait to celebrate with you!
-                    <br><br>
-                    With love,<br>
-                    Sarah & Michael
-                </p>
-            </div>
-
-            <!-- Event Details Grid -->
-            <div class="grid grid-cols-2 gap-4" style="margin-bottom: 2rem;">
-                <div class="glass-card">
-                    <h4 style="margin-bottom: 1rem; color: var(--primary);"><i class="fa-solid fa-palette"></i> Theme & Dress Code</h4>
-                    <div style="color: var(--text-muted);">
-                        <p><strong>Theme:</strong> Romantic Garden</p>
-                        <p style="margin-top: 0.5rem;"><strong>Dress Code:</strong> Formal / Black Tie Optional</p>
-                        <p style="margin-top: 0.5rem;"><strong>Color Palette:</strong> Blush Pink, Gold, Ivory</p>
-                    </div>
-                </div>
-
-                <div class="glass-card">
-                    <h4 style="margin-bottom: 1rem; color: var(--primary);"><i class="fa-solid fa-users"></i> Guest Count</h4>
-                    <div style="color: var(--text-muted);">
-                        <p><strong>Total Invited:</strong> 250 guests</p>
-                        <p style="margin-top: 0.5rem;"><strong>Confirmed:</strong> 187 guests</p>
-                        <p style="margin-top: 0.5rem;"><strong>Pending:</strong> 63 guests</p>
-                    </div>
+            <div class="card">
+                <h4 style="font-size: 14px; margin-bottom: 12px;"><i class="fa-solid fa-circle-info" style="margin-right: 8px;"></i> Important Info</h4>
+                <div style="font-size: 13px; color: var(--text-secondary);">
+                    <p><strong>RSVP:</strong> By Jan 30, 2026</p>
+                    <p style="margin-top: 8px;"><strong>Parking:</strong> Complimentary valet</p>
+                    <p style="margin-top: 8px;"><strong>Dietary:</strong> Contact us via email</p>
                 </div>
             </div>
-
-            <!-- Event Schedule -->
-            <div class="glass-card info-section">
-                <h3 style="margin-bottom: 1.5rem;"><i class="fa-regular fa-calendar-check"></i> Event Schedule</h3>
-                
-                <div class="timeline-item">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">5:00 PM - Guest Arrival</div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Welcome drinks and photo booth available</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">5:30 PM - Ceremony</div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Wedding ceremony in the main hall</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">6:30 PM - Cocktail Hour</div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Appetizers and drinks in the garden area</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">7:30 PM - Dinner Service</div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Three-course meal (see menu below)</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">9:00 PM - First Dance & Dancing</div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Live band performance and dance floor opens</p>
-                </div>
-
-                <div class="timeline-item">
-                    <div style="font-weight: 600; margin-bottom: 0.25rem;">11:00 PM - Event Ends</div>
-                    <p style="color: var(--text-muted); font-size: 0.9rem;">Farewell and transportation available</p>
-                </div>
-            </div>
-
-            <!-- Menu -->
-            <div class="glass-card info-section">
-                <h3 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-utensils"></i> Dinner Menu</h3>
-                
-                <h4 style="margin-bottom: 1rem; color: var(--accent);">Appetizers</h4>
-                <div class="menu-item">
-                    <div>
-                        <div style="font-weight: 600;">Caprese Salad</div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Fresh mozzarella, tomatoes, basil, balsamic glaze</p>
-                    </div>
-                    <span style="background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; height: fit-content;">Vegetarian</span>
-                </div>
-
-                <div class="menu-item">
-                    <div>
-                        <div style="font-weight: 600;">Shrimp Cocktail</div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Jumbo shrimp with cocktail sauce</p>
-                    </div>
-                </div>
-
-                <h4 style="margin: 1.5rem 0 1rem; color: var(--accent);">Main Course (Choose One)</h4>
-                <div class="menu-item">
-                    <div>
-                        <div style="font-weight: 600;">Grilled Salmon</div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Herb-crusted salmon with lemon butter sauce, roasted vegetables</p>
-                    </div>
-                </div>
-
-                <div class="menu-item">
-                    <div>
-                        <div style="font-weight: 600;">Filet Mignon</div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">8oz beef tenderloin with red wine reduction, garlic mashed potatoes</p>
-                    </div>
-                </div>
-
-                <div class="menu-item">
-                    <div>
-                        <div style="font-weight: 600;">Vegetarian Risotto</div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Mushroom and truffle risotto with parmesan</p>
-                    </div>
-                    <span style="background: rgba(16, 185, 129, 0.1); color: var(--success); padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; height: fit-content;">Vegetarian</span>
-                </div>
-
-                <h4 style="margin: 1.5rem 0 1rem; color: var(--accent);">Dessert</h4>
-                <div class="menu-item">
-                    <div>
-                        <div style="font-weight: 600;">Wedding Cake</div>
-                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">Three-tier vanilla and chocolate cake with buttercream frosting</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Important Information -->
-            <div class="glass-card info-section">
-                <h3 style="margin-bottom: 1.5rem;"><i class="fa-solid fa-circle-info"></i> Important Information</h3>
-                
-                <div style="display: flex; flex-direction: column; gap: 1rem;">
-                    <div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Parking</h4>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">Complimentary valet parking available at the venue entrance</p>
-                    </div>
-
-                    <div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Photography</h4>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">Professional photographers will be present. Please feel free to take photos, but we kindly request an unplugged ceremony.</p>
-                    </div>
-
-                    <div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">Dietary Restrictions</h4>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">If you have any dietary restrictions or allergies, please contact us at events@sarahandmichael.com</p>
-                    </div>
-
-                    <div>
-                        <h4 style="color: var(--primary); margin-bottom: 0.5rem;">RSVP</h4>
-                        <p style="color: var(--text-muted); font-size: 0.95rem;">Please confirm your attendance by January 30, 2026</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Feedback (FR019) -->
-            <div class="glass-card info-section">
-                <h3 style="margin-bottom: 1rem;"><i class="fa-solid fa-comment-dots"></i> Event Feedback (FR019)</h3>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">We value your experience! Please let us know how we did.</p>
-                
-                <form onsubmit="event.preventDefault(); alert('Thank you for your feedback! (FR019)');">
-                    <div style="margin-bottom: 1rem;">
-                         <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Rate your experience</label>
-                         <div class="flex gap-2">
-                             <input type="radio" name="rating" id="r5"><label for="r5" class="btn btn-glass" style="padding: 0.5rem;"><i class="fa-solid fa-star"></i> 5</label>
-                             <input type="radio" name="rating" id="r4"><label for="r4" class="btn btn-glass" style="padding: 0.5rem;"><i class="fa-solid fa-star"></i> 4</label>
-                             <input type="radio" name="rating" id="r3"><label for="r3" class="btn btn-glass" style="padding: 0.5rem;"><i class="fa-solid fa-star"></i> 3</label>
-                         </div>
-                    </div>
-                    <div style="margin-bottom: 1rem;">
-                        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Comments</label>
-                        <textarea style="width: 100%; padding: 0.8rem; background: var(--bg-darker); border: 1px solid var(--border-light); border-radius: 0.5rem; color: white;" rows="3" placeholder="What did you enjoy most?"></textarea>
-                    </div>
-                    <button class="btn btn-primary" style="width: 100%;">Submit Feedback</button>
-                </form>
-            </div>
-
-            <!-- RSVP Button -->
-            <div style="text-align: center; margin: 3rem 0;">
-                <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 3rem;">
-                    <i class="fa-solid fa-check"></i> Confirm Your Attendance
-                </button>
-            </div>
-
         </div>
-    </div>
 
-    <script src="script.js"></script>
+        <section style="margin-bottom: 48px;">
+            <h3 style="font-size: 18px; margin-bottom: 24px;">Event Schedule</h3>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div style="font-size: 13px; font-weight: 600;">5:00 PM - Guest Arrival</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Welcome drinks and photo booth</div>
+                </div>
+                <div class="timeline-item">
+                    <div style="font-size: 13px; font-weight: 600;">5:30 PM - Ceremony</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Wedding ceremony starts</div>
+                </div>
+                <div class="timeline-item">
+                    <div style="font-size: 13px; font-weight: 600;">7:30 PM - Dinner Service</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Three-course meal</div>
+                </div>
+                <div class="timeline-item">
+                    <div style="font-size: 13px; font-weight: 600;">11:00 PM - Event Ends</div>
+                    <div style="font-size: 12px; color: var(--text-secondary);">Farewell</div>
+                </div>
+            </div>
+        </section>
+
+        <section style="margin-bottom: 48px;">
+            <h3 style="font-size: 18px; margin-bottom: 24px;">Dinner Menu</h3>
+            <div class="menu-grid">
+                <div class="menu-item">
+                    <div style="font-size: 13px; font-weight: 500;">Grilled Salmon</div>
+                    <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">Herb-crusted with lemon butter sauce</div>
+                </div>
+                <div class="menu-item">
+                    <div style="font-size: 13px; font-weight: 500;">Filet Mignon</div>
+                    <div style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px;">Red wine reduction & garlic mash</div>
+                </div>
+                <div class="menu-item">
+                    <div style="font-size: 13px; font-weight: 500;">Vegetarian Risotto</div>
+                    <div style="font-size: 11px; color: var(--primary); margin-top: 4px;">Vegetarian • Truffle oil</div>
+                </div>
+            </div>
+        </section>
+
+        <section style="text-align: center; padding-bottom: 80px;">
+            <button class="btn btn-primary" style="padding: 12px 32px; font-size: 14px;">Confirm Your Attendance</button>
+        </section>
+    </main>
+
 </body>
 </html>

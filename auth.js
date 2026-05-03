@@ -80,11 +80,14 @@ const DEMO_USERS = {
  * Session Management
  */
 class SessionManager {
+    static SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+
     static createSession(userData) {
         const session = {
             ...userData,
             loginTime: new Date().toISOString(),
-            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours
+            lastActive: Date.now(),
+            expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
         };
         
         sessionStorage.setItem(AUTH_CONFIG.SESSION_KEY, JSON.stringify(session));
@@ -97,131 +100,72 @@ class SessionManager {
         
         const session = JSON.parse(sessionData);
         
-        // Check if session expired
+        // Check inactivity
+        if (Date.now() - session.lastActive > this.SESSION_TIMEOUT) {
+            this.clearSession();
+            return null;
+        }
+
+        // Check expiration
         if (new Date(session.expiresAt) < new Date()) {
             this.clearSession();
             return null;
         }
+        
+        // Update activity
+        session.lastActive = Date.now();
+        sessionStorage.setItem(AUTH_CONFIG.SESSION_KEY, JSON.stringify(session));
         
         return session;
     }
     
     static clearSession() {
         sessionStorage.removeItem(AUTH_CONFIG.SESSION_KEY);
-        sessionStorage.clear();
     }
     
     static isAuthenticated() {
         return this.getSession() !== null;
-    }
-    
-    static getRole() {
-        const session = this.getSession();
-        return session ? session.role : null;
     }
 }
 
 /**
  * Authentication Functions
  */
-function authenticateAdmin(username, password, pin) {
-    const admin = DEMO_USERS.admin;
+function login(email, password) {
+    const user = DataStore.getUserByEmail(email);
     
-    if (username === admin.username && 
-        password === admin.password && 
-        pin === admin.pin) {
-        return {
-            success: true,
-            user: {
-                role: admin.role,
-                username: admin.username,
-                name: admin.name
-            }
-        };
+    if (user && user.password === password) {
+        // Don't include password in session
+        const { password: _, ...userSafe } = user;
+        SessionManager.createSession(userSafe);
+        return { success: true, user: userSafe };
     }
     
-    return {
-        success: false,
-        error: 'Invalid admin credentials'
-    };
+    return { success: false, error: 'Invalid email or password' };
 }
 
-function authenticateCustomer(email, password) {
-    const customer = DEMO_USERS.customers.find(
-        c => c.email === email && c.password === password
-    );
-    
-    if (customer) {
-        return {
-            success: true,
-            user: {
-                role: customer.role,
-                email: customer.email,
-                name: customer.name,
-                customerId: customer.customerId,
-                guestCode: customer.guestCode
-            }
-        };
+function register(userData) {
+    const existing = DataStore.getUserByEmail(userData.email);
+    if (existing) {
+        return { success: false, error: 'User already exists' };
     }
     
-    return {
-        success: false,
-        error: 'Invalid email or password'
-    };
+    const newUser = DataStore.saveUser(userData);
+    return { success: true, user: newUser };
 }
 
-function authenticateVendor(vendorId, password) {
-    const vendor = DEMO_USERS.vendors.find(
-        v => v.vendorId === vendorId && v.password === password
-    );
-    
-    if (vendor) {
-        return {
-            success: true,
-            user: {
-                role: vendor.role,
-                vendorId: vendor.vendorId,
-                name: vendor.name,
-                businessName: vendor.businessName,
-                category: vendor.category
-            }
-        };
-    }
-    
-    return {
-        success: false,
-        error: 'Invalid vendor ID or password'
-    };
-}
+function updateProfile(updatedData) {
+    const session = SessionManager.getSession();
+    if (!session) return { success: false, error: 'Not authenticated' };
 
-function authenticateGuest(code) {
-    const eventData = DEMO_USERS.guestCodes[code];
+    const user = DataStore.getUserByEmail(session.email);
+    const updatedUser = DataStore.saveUser({ ...user, ...updatedData });
     
-    if (eventData) {
-        // Check if code is still valid
-        if (new Date(eventData.validUntil) >= new Date()) {
-            return {
-                success: true,
-                user: {
-                    role: AUTH_CONFIG.ROLES.GUEST,
-                    guestCode: code,
-                    eventId: eventData.eventId,
-                    eventName: eventData.eventName,
-                    customerId: eventData.customerId
-                }
-            };
-        } else {
-            return {
-                success: false,
-                error: 'This guest code has expired'
-            };
-        }
-    }
+    // Update session
+    const { password: _, ...userSafe } = updatedUser;
+    SessionManager.createSession(userSafe);
     
-    return {
-        success: false,
-        error: 'Invalid guest code'
-    };
+    return { success: true, user: userSafe };
 }
 
 /**
@@ -231,13 +175,11 @@ function requireAuth(allowedRoles = []) {
     const session = SessionManager.getSession();
     
     if (!session) {
-        // Not authenticated, redirect to login
         window.location.href = 'login.html';
         return false;
     }
     
     if (allowedRoles.length > 0 && !allowedRoles.includes(session.role)) {
-        // Wrong role, redirect to appropriate dashboard
         redirectToDashboard(session.role);
         return false;
     }
@@ -247,10 +189,12 @@ function requireAuth(allowedRoles = []) {
 
 function redirectToDashboard(role) {
     const dashboards = {
-        admin: 'dashboard.html',
-        customer: 'dashboard.html',
+        admin: 'admin.html',
+        organizer: 'dashboard.html',
         vendor: 'vendor-dashboard.html',
-        guest: 'guest-view.html'
+        staff: 'staff-dashboard.html',
+        sponsor: 'sponsor-dashboard.html',
+        attendee: 'guest-view.html'
     };
     
     window.location.href = dashboards[role] || 'login.html';
@@ -261,9 +205,7 @@ function redirectToDashboard(role) {
  */
 function logout() {
     SessionManager.clearSession();
-    localStorage.removeItem('rememberedEmail');
-    localStorage.removeItem('rememberedVendorId');
-    window.location.href = 'login.html';
+    window.location.href = 'index.html';
 }
 
 /**
