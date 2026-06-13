@@ -11,6 +11,8 @@ The platform works like a **"FoodPanda for events"**:
 
 ---
 
+## 🌟 Live Demo 👉 https://proportional-duck.github.io/Event_Hive/
+
 ## 🌟 Key Features & Portals
 
 ### 1. 👑 Multi-Role Orchestration System
